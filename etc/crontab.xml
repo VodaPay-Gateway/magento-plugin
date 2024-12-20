@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="vodapay_payment_gateway">
+        <job instance="VodaPay\VodaPay\Cron\UpdateOrder" method="execute" name="vodapay_order_update">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+    </group>
+</config>

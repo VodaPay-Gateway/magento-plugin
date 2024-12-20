@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--
+/*
+ * Copyright (c) 2022 VodaPay
+ *
+ * Author: App Inlet (Pty) Ltd
+ *
+ * Released under the GNU General Public License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_payment_refund">
+        <observer name="vodapay_purchase_refund"
+                  instance="VodaPay\VodaPay\Observer\PurchaseRefund"/>
+    </event>
+    <event name="sales_order_payment_void">
+        <observer name="vodapay_payment_void"
+                  instance="VodaPay\VodaPay\Observer\PaymentVoid"/>
+    </event>
+    <event name="order_cancel_after">
+        <observer name="vodapay_order_cancel_after"
+                  instance="VodaPay\VodaPay\Observer\OrderCancelAfter"/>
+    </event>
+    <event name="sales_order_invoice_pay">
+        <observer name="vodapay_capture_auth"
+                  instance="VodaPay\VodaPay\Observer\OrderAuthCaptured"/>
+    </event>
+    <event name="sales_order_shipment_save_after">
+        <observer name="vodapay_shipped"
+                  instance="VodaPay\VodaPay\Observer\OrderShipped"/>
+    </event>
+</config>
+
