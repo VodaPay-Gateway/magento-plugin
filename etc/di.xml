@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Magento\Sales\Model\Order\Email\Sender\OrderSender"
+                type="VodaPay\VodaPay\Model\Email\OrderSender"/>
+    <type name="Magento\Quote\Observer\Webapi\SubmitObserver">
+        <arguments>
+            <argument name="orderSender" xsi:type="object">VodaPay\VodaPay\Model\Email\OrderSender
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Payment Method Facade configuration -->
+    <virtualType name="VodaPayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\VodaPay\VodaPay\Gateway\Config\Config::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">VodaPay\VodaPay\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">VodaPayValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">VodaPayCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="VodaPayCaptureStrategyCommand"
+                 type="VodaPay\VodaPay\Gateway\Command\CaptureStrategyCommand">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">VodaPayCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Configuration reader -->
+    <type name="VodaPay\VodaPay\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\VodaPay\VodaPay\Gateway\Config\Config::CODE
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Logger, initialized with VodaPayConfig -->
+    <virtualType name="VodaPayLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">VodaPay\VodaPay\Gateway\Config\Config</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="VodaPay\VodaPay\Gateway\Http\Client\PaymentTransaction">
+        <arguments>
+            <argument name="logger" xsi:type="object">VodaPayLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- Commands infrastructure -->
+    <virtualType name="VodaPayCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="capture" xsi:type="string">VodaPayCaptureStrategyCommand</item>
+                <item name="authorize" xsi:type="string">VodaPayCaptureStrategyCommand</item>
+                <item name="settlement" xsi:type="string">VodaPayCaptureCommand</item>
+                <item name="void" xsi:type="string">VodaPayVoidCommand</item>
+                <item name="refund" xsi:type="string">VodaPayRefundCommand</item>
+                <item name="cancel" xsi:type="string">VodaPayVoidCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Capture command -->
+    <virtualType name="VodaPayCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">
+                VodaPay\VodaPay\Gateway\Request\CaptureRequest
+            </argument>
+            <argument name="transferFactory" xsi:type="object">
+                VodaPay\VodaPay\Gateway\Http\TransferFactory
+            </argument>
+            <argument name="client" xsi:type="object">
+                VodaPay\VodaPay\Gateway\Http\Client\TransactionCapture
+            </argument>
+        </arguments>
+    </virtualType>
+
+
+    <!-- Void command -->
+    <virtualType name="VodaPayVoidCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">VodaPay\VodaPay\Gateway\Request\VoidRequest
+            </argument>
+            <argument name="transferFactory" xsi:type="object">
+                VodaPay\VodaPay\Gateway\Http\TransferFactory
+            </argument>
+            <argument name="client" xsi:type="object">VodaPay\VodaPay\Gateway\Http\Client\TransactionVoid
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Refund Command -->
+    <virtualType name="VodaPayRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">
+                VodaPay\VodaPay\Gateway\Request\RefundRequest
+            </argument>
+            <argument name="transferFactory" xsi:type="object">
+                VodaPay\VodaPay\Gateway\Http\TransferFactory
+            </argument>
+            <argument name="client" xsi:type="object">
+                VodaPay\VodaPay\Gateway\Http\Client\TransactionRefund
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- END Refund Command -->
+
+    <!-- Value handlers infrastructure -->
+    <virtualType name="VodaPayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">VodaPayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="VodaPayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">VodaPay\VodaPay\Gateway\Config\Config
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="VodaPay\VodaPay\Block\Info">
+        <arguments>
+            <argument name="config" xsi:type="object">VodaPay\VodaPay\Gateway\Config\Config</argument>
+        </arguments>
+    </type>
+
+</config>
