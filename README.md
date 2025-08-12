@@ -9,8 +9,8 @@
 
 #### Install using FTP/SFTP
 
-- Download ***magento-plugin-1.1.6.zip*** and unzip it to a directory on your local machine.
-- Use an FTP tool (such as *FileZilla*) to upload the contents of ```magento-plugin-1.1.6``` directory to
+- Download ***magento-plugin-1.1.7.zip*** and unzip it to a directory on your local machine.
+- Use an FTP tool (such as *FileZilla*) to upload the contents of ```magento-plugin-1.1.7``` directory to
   the ```app\code\VodaPay\VodaPay\```directory of your Magento installation.
 - From the Magento root directory, install VodaPay dependencies
   using ```composer require ngenius/ngenius-common:v1.1.0```.
@@ -23,8 +23,7 @@
 - ```bin/magento indexer:reindex```
 - ```bin/magento cache:clean```
 
-
 ## Download
 
 You can download the latest version of the plugin from
-our [Github releases page](https://github.com/VodaPay-Gateway/magento-plugin/releases)
+our [Gitlab releases page](https://gitlab.com/vodapay-gateway/magento-plugin/-/releases)

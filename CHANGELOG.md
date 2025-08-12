@@ -1,12 +1,12 @@
 # Changelog
 
-## [[1.1.7]](https://github.com/VodaPay-Gateway/magento-plugin/releases/tag/1.1.7)
+## [[1.1.7]](https://gitlab.com/vodapay-gateway/magento-plugin/-/tree/1.1.7?ref_type=tags)
 
 ### Fixed
 
 - Corrected status flow for post-shipment invoicing.
 
-## [[1.1.6]](https://github.com/VodaPay-Gateway/magento-plugin/releases/tag/1.1.6)
+## [[1.1.6]](https://gitlab.com/vodapay-gateway/magento-plugin/-/tree/1.1.6?ref_type=tags)
 
 ### Fixed
 
@@ -37,7 +37,8 @@
 
 - Don't allow OrderCancelAfter Observer to trigger for other payment methods.
 - Don't allow Cron to process orders created by other payment methods.
-- Change the cron table from `vodapay_vodapay` to `vodapay_vodapay_sales_order` to avoid processing historic orders.
+- Change the cron table from `vodapay_vodapay` to `vodapay_vodapay_sales_order` to avoid
+  processing historic orders.
 
 ### Fixed
 
